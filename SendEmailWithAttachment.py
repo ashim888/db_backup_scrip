@@ -25,8 +25,8 @@ class SendBackupEmail:
         self.sender="backup@fintechnepal.com"
         self.sender_pass=args.get('sender_pass')
         self.receiver=args.get('receiver_email')
-        self.smtp_ssl_host = "mail.fintechnepal.com"  # smtp.mail.yahoo.com
-        self.smtp_ssl_port = 465
+        self.smtp_ssl_host = args.get('smtp_ssl_host')
+        self.smtp_ssl_port = args.get('smtp_ssl_port')
 
 
     def get_db_backup(self):
@@ -40,7 +40,6 @@ class SendBackupEmail:
         from email.mime.text import MIMEText
         from email.mime.multipart import MIMEMultipart
         import smtplib
-        import mimetypes
         import email.mime.application
 
         s = smtplib.SMTP_SSL(self.smtp_ssl_host, self.smtp_ssl_port)
@@ -65,13 +64,15 @@ class SendBackupEmail:
         s.send_message(self.msg)
         s.quit()
 
-values={"client":"ABC Corp",
-        "mysql_user":"root",
-        "mysql_pass":"Anonymous@123!@#",
-        "mysql_db":"studysys",
+values={"client":"Client_name",
+        "mysql_user":"mysql_user",
+        "mysql_pass":"mysql_pass",
+        "mysql_db":"db_name",
         "mysql_host":"localhost",
-        "sender_pass":"dUEg{u5OfVOQ",
-        "receiver_email":"ashim.lamichhane@fintechnepal.com"}
+        "sender_pass":"sender_email_password",
+        "receiver_email":"ashim.lamichhane@fintechnepal.com",
+        "smtp_ssl_host":"mail.fintechnepal.com",
+        "smtp_ssl_port":465 }
 obj=SendBackupEmail(values)
 obj.get_db_backup()
 obj.email_send()
