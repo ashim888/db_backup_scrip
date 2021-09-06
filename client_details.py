@@ -1,0 +1,31 @@
+#!/usr/bin/python
+'''
+Multiple Db can be fetched and email can be sent for each different organizations
+'''
+values=[{
+    "client1":{
+        "client":"Client_name",
+        "mysql_user":"mysql_user",
+        "mysql_pass":"mysql_pass",
+        "mysql_db":"db_name",
+        "mysql_host":"localhost",
+        "sender_email":"sender_email",
+        "sender_pass":"sender_email_password",
+        "receiver_email":"ashim.lamichhane@fintechnepal.com",
+        "smtp_ssl_host":"mail.asd.com",
+        "smtp_ssl_port":465
+    },
+    "client2":{
+        "client":"Client_name",
+        "mysql_user":"mysql_user",
+        "mysql_pass":"mysql_pass",
+        "mysql_db":"db_name",
+        "mysql_host":"localhost",
+        "sender_email":"sender_email",
+        "sender_pass":"sender_email_password",
+        "receiver_email":"ashim.lamichhane@fintechnepal.com",
+        "smtp_ssl_host":"mail.asd.com",
+        "smtp_ssl_port":465
+    }
+}]
+

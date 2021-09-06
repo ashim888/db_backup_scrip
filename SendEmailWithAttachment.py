@@ -8,11 +8,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+from client_details import values
 
 class SendBackupEmail:
     def __init__(self,args):
-        # self.client, self.mysql_usr,self.mysql_pass,self.mysql_db = dict(args)
-        # self.args=dict(args)
         self.client = args.get('client')
         self.mysql_user=args.get('mysql_user')
         self.mysql_pass=args.get('mysql_pass')
@@ -21,8 +20,7 @@ class SendBackupEmail:
         self.now=datetime.now()
         self.date_format="%Y-%m-%d"
         self.time1=self.now.strftime(self.date_format)
-        self.db_path=os.getcwd()
-        self.sender="backup@fintechnepal.com"
+        self.sender=args.get("sender_email")
         self.sender_pass=args.get('sender_pass')
         self.receiver=args.get('receiver_email')
         self.smtp_ssl_host = args.get('smtp_ssl_host')
@@ -30,49 +28,42 @@ class SendBackupEmail:
 
 
     def get_db_backup(self):
-        # self.dumpcmd = "mysqldump -h " + self.mysql_host + " -u " + self.mysql_user + " -p " + self.mysql_db + " > " + self.db_path + "/" +self.client+"_" +self.time1+ ".sql"
-        # print(self.dumpcmd)
-        # os.system(dumpcmd)
-        subprocess.call(["/Users/ashim888/Documents/db_config/script.sh",self.mysql_user,self.mysql_pass,self.mysql_db,self.client])
-        print("db backup complete")
+        self.script_path=os.path.abspath(os.getcwd())+"/script.sh"
+        # print(self.script_path)
+        subprocess.call([self.script_path,self.mysql_user,self.mysql_pass,self.mysql_db,self.client])
+        # print("db backup complete")
 
     def email_send(self):
         from email.mime.text import MIMEText
         from email.mime.multipart import MIMEMultipart
         import smtplib
         import email.mime.application
+        try:
+            s = smtplib.SMTP_SSL(self.smtp_ssl_host, self.smtp_ssl_port)
+            s.login(self.sender, self.sender_pass)
 
-        s = smtplib.SMTP_SSL(self.smtp_ssl_host, self.smtp_ssl_port)
-        s.login(self.sender, self.sender_pass)
+            self.msg = MIMEMultipart()
+            self.msg['Subject'] = '{} Backup for {}'.format(self.client,self.now)
+            self.msg['From'] = self.sender
+            self.msg['To'] = self.receiver
 
-        self.msg = MIMEMultipart()
-        self.msg['Subject'] = '{} Backup for {}'.format(self.client,self.now)
-        self.msg['From'] = self.sender
-        self.msg['To'] = self.receiver
+            self.txt = MIMEText('Database Backup')
+            self.msg.attach(self.txt)
 
-        self.txt = MIMEText('Database Backup')
-        self.msg.attach(self.txt)
+            self.filename = "{}/db_backup/{}_db_{}.zip".format(self.script_path,self.client,self.time1)
+            # print(self.filename)
+            fo=open(self.filename,'rb')
+            attach = email.mime.application.MIMEApplication(fo.read(),_subtype="zip")
+            fo.close()
+            attach.add_header('Content-Disposition','attachment',filename=self.filename)
+            self.msg.attach(attach)
+            s.send_message(self.msg)
+            s.quit()
+        except Exception as exc:
+            print(exc)
 
-        # filename = 'introduction-to-algorithms-3rd-edition-sep-2010.pdf' #path to file
-        self.filename = "{}/db_backup/{}_db_{}.zip".format(os.getcwd(),self.client,self.time1)
-        print(self.filename)
-        fo=open(self.filename,'rb')
-        attach = email.mime.application.MIMEApplication(fo.read(),_subtype="zip")
-        fo.close()
-        attach.add_header('Content-Disposition','attachment',filename=self.filename)
-        self.msg.attach(attach)
-        s.send_message(self.msg)
-        s.quit()
-
-values={"client":"Client_name",
-        "mysql_user":"mysql_user",
-        "mysql_pass":"mysql_pass",
-        "mysql_db":"db_name",
-        "mysql_host":"localhost",
-        "sender_pass":"sender_email_password",
-        "receiver_email":"ashim.lamichhane@fintechnepal.com",
-        "smtp_ssl_host":"mail.fintechnepal.com",
-        "smtp_ssl_port":465 }
-obj=SendBackupEmail(values)
-obj.get_db_backup()
-obj.email_send()
+for x in values:
+    for key,value in x.items():
+        obj=SendBackupEmail(value)
+        obj.get_db_backup()
+        obj.email_send()
