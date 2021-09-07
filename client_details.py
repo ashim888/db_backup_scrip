@@ -2,21 +2,21 @@
 '''
 Multiple DB with multiple creds
 '''
-values=[{
+clients=[{
     "client1":{
-        "client":"study",
-        "mysql_user":"root",
-        "mysql_pass":"Anonymous",
-        "mysql_db":"study",
-        "mysql_host":"localhost",
-        "sender_email":"backup@aads.com",
-        "sender_pass":"a",
-        "receiver_email":"ram.pandit@aads.com",
-        "smtp_ssl_host":"mail.aads.com",
+        "client":"client1",
+        "mysql_user":"noroot",
+        "mysql_pass":"norootp",
+        "mysql_db":"db_client1",
+        "mysql_host":"Myysql_Host_IP",
+        "sender_email":"backup@email.com",
+        "sender_pass":"sender_password",
+        "receiver_email":"receiver@email.com",
+        "smtp_ssl_host":"mail.fintechnepal.com",
         "smtp_ssl_port":465,
-        "backup_server_user":"aads",
-        "backup_server_ip":"103.2.1.1",
-        "backup_server_port":"2017"
+        "backup_server_user":"server_username",
+        "backup_server_ip":"backup_server_ip",
+        "backup_server_port":"port_number_if_not_22"
     },
     "client2":{
         "client":"Client_name",
@@ -26,12 +26,13 @@ values=[{
         "mysql_host":"localhost",
         "sender_email":"sender_email",
         "sender_pass":"sender_email_password",
-        "receiver_email":"ashim.lamichhane@fintechnepal.com",
-        "smtp_ssl_host":"mail.fintechnepal.com",
+        "receiver_email":"hhane@email.com",
+        "smtp_ssl_host":"mail.email.com",
         "smtp_ssl_port":465,
-        "backup_server_user":"fintech",
+        "backup_server_user":"username",
         "backup_server_ip":"",
         "backup_server_port":""
     }
 }]
+
 

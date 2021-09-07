@@ -1,17 +1,13 @@
 #!/usr/bin/python
 
-import smtplib
-import base64
 from datetime import datetime
 import os,subprocess
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
-from email import encoders
-from client_details import values
 from pathlib import Path
 
-class SendBackupEmail:
+class BackupMysql:
     def __init__(self,args):
         self.client = args.get('client')
         self.mysql_user=args.get('mysql_user')
@@ -35,15 +31,16 @@ class SendBackupEmail:
         try:
             self.script_path=os.path.abspath(os.getcwd())+"/script.sh"
             subprocess.call([self.script_path,self.mysql_user,self.mysql_pass,self.mysql_db,self.client,self.backup_server_user,self.backup_server_ip,self.backup_server_port])
-            print("DB backedup")
+            return True
         except Exception as exc:
             print(exc)
     
+
     def rm_db_backup(self):
         try:
             self.script_path=os.path.abspath(os.getcwd())+"/backup_delete.sh"
             subprocess.call([self.script_path,self.client])
-            print("DB deleted")
+            return True
         except Exception as exc:
             print(exc)
 
@@ -74,14 +71,16 @@ class SendBackupEmail:
             self.msg.attach(attach)
             s.send_message(self.msg)
             s.quit()
-            print("Mail Sent")
+            return True
         except Exception as exc:
             print(exc)
 
-for x in values:
-    for key,value in x.items():
-        obj=SendBackupEmail(value)
-        obj.get_db_backup()
-        obj.email_send()
-        obj.rm_db_backup()
-        print("=====================")
+
+# def trigger(values):
+#     for x in values:
+#         for key,value in x.items():
+#             obj=BackupMysql(value)
+#             obj.get_db_backup()
+#             obj.email_send()
+#             obj.rm_db_backup()
+#         print(key," Backedup")
