@@ -16,7 +16,7 @@ class BackupMysql:
         self.client = args.get('client')
         self.mysql_user=os.getenv("mysql_user")
         self.mysql_pass=os.getenv("mysql_pass")
-        self.mysql_db=args.get('client')
+        self.mysql_db=args.get('mysql_db')
         self.mysql_host=os.getenv("mysql_host")
         self.backup_server_user=os.getenv("backup_server_user")
         self.backup_server_ip=os.getenv("backup_server_ip")
