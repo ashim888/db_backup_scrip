@@ -9,6 +9,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from client_details import values
+from pathlib import Path
 
 class SendBackupEmail:
     def __init__(self,args):
@@ -17,6 +18,9 @@ class SendBackupEmail:
         self.mysql_pass=args.get('mysql_pass')
         self.mysql_db=args.get('mysql_db')
         self.mysql_host=args.get('mysql_host')
+        self.backup_server_user=args.get('backup_server_user')
+        self.backup_server_ip=args.get('backup_server_ip')
+        self.backup_server_port=args.get('backup_server_port')
         self.now=datetime.now()
         self.date_format="%Y-%m-%d"
         self.time1=self.now.strftime(self.date_format)
@@ -28,10 +32,21 @@ class SendBackupEmail:
 
 
     def get_db_backup(self):
-        self.script_path=os.path.abspath(os.getcwd())+"/script.sh"
-        # print(self.script_path)
-        subprocess.call([self.script_path,self.mysql_user,self.mysql_pass,self.mysql_db,self.client])
-        # print("db backup complete")
+        try:
+            self.script_path=os.path.abspath(os.getcwd())+"/script.sh"
+            subprocess.call([self.script_path,self.mysql_user,self.mysql_pass,self.mysql_db,self.client,self.backup_server_user,self.backup_server_ip,self.backup_server_port])
+            print("DB backedup")
+        except Exception as exc:
+            print(exc)
+    
+    def rm_db_backup(self):
+        try:
+            self.script_path=os.path.abspath(os.getcwd())+"/backup_delete.sh"
+            subprocess.call([self.script_path,self.client])
+            print("DB deleted")
+        except Exception as exc:
+            print(exc)
+
 
     def email_send(self):
         from email.mime.text import MIMEText
@@ -50,8 +65,8 @@ class SendBackupEmail:
             self.txt = MIMEText('Database Backup')
             self.msg.attach(self.txt)
 
-            self.filename = "{}/db_backup/{}_db_{}.zip".format(self.script_path,self.client,self.time1)
-            # print(self.filename)
+            self.filename = "{}/db_backup/{}_db_{}.zip".format(Path.home(),self.client,self.time1)
+            print("File path for mail: ",self.filename)
             fo=open(self.filename,'rb')
             attach = email.mime.application.MIMEApplication(fo.read(),_subtype="zip")
             fo.close()
@@ -59,6 +74,7 @@ class SendBackupEmail:
             self.msg.attach(attach)
             s.send_message(self.msg)
             s.quit()
+            print("Mail Sent")
         except Exception as exc:
             print(exc)
 
@@ -67,3 +83,5 @@ for x in values:
         obj=SendBackupEmail(value)
         obj.get_db_backup()
         obj.email_send()
+        obj.rm_db_backup()
+        print("=====================")
