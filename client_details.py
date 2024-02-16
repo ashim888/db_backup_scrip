@@ -2,37 +2,50 @@
 '''
 Multiple DB with multiple creds
 '''
+
 clients=[{
-    "client1":{
-        "client":"client1",
-        "mysql_user":"noroot",
-        "mysql_pass":"norootp",
-        "mysql_db":"db_client1",
-        "mysql_host":"Myysql_Host_IP",
-        "sender_email":"backup@email.com",
-        "sender_pass":"sender_password",
-        "receiver_email":"receiver@email.com",
-        "smtp_ssl_host":"mail.fintechnepal.com",
-        "smtp_ssl_port":465,
-        "backup_server_user":"server_username",
-        "backup_server_ip":"backup_server_ip",
-        "backup_server_port":"port_number_if_not_22"
+    "1":{
+        "client":"admin",
+        "mysql_db":"db_bizpro_admin",
     },
-    "client2":{
-        "client":"Client_name",
-        "mysql_user":"mysql_user",
-        "mysql_pass":"mysql_pass",
-        "mysql_db":"db_name",
-        "mysql_host":"localhost",
-        "sender_email":"sender_email",
-        "sender_pass":"sender_email_password",
-        "receiver_email":"hhane@email.com",
-        "smtp_ssl_host":"mail.email.com",
-        "smtp_ssl_port":465,
-        "backup_server_user":"username",
-        "backup_server_ip":"",
-        "backup_server_port":""
-    }
+    "2":{
+        "client":"AusStudies",
+        "mysql_db":"db_bizpro_ausstudies",
+        
+    },
+    "3":{
+        "client":"autoview",
+        "mysql_db":"db_bizpro_auto_view",
+        
+    },    
+    "4":{
+        "client":"carmandu",
+        "mysql_db":"db_bizpro_easy_carmandu",
+        
+    },
+    "5":{
+        "client":"fintech",
+        "mysql_db":"db_bizpro_fintech",
+        
+    },
+    "6":{
+        "client":"global_equity",
+        "mysql_db":"db_bizpro_global_equity",
+    },
+    "7":{
+        "client":"kda",
+        "mysql_db":"db_bizpro_kda",
+        
+    },
+    "8":{
+        "client":"panaya",
+        "mysql_db":"db_bizpro_panaya",
+    },
+    "9":{
+        "client":"bna",
+        "mysql_db":"db_bizpro_bna",
+    },
+    
 }]
 
 

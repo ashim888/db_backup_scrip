@@ -9,5 +9,5 @@ mysqldump -u $1 --password=$2 $3 > $HOME/db_backup/$4_db_${CURRENTDATE}.sql
 zip $HOME/db_backup/$4_db_${CURRENTDATE}.zip $HOME/db_backup/$4_db_${CURRENTDATE}.sql
 
 # SCP TO BACKUP SERVER
-scp -P $7 $HOME/db_backup/$4_db_${CURRENTDATE}.zip $5@$6:/home/fintech/db_backup/
+scp -P $7 $HOME/db_backup/$4_db_${CURRENTDATE}.zip $5@$6:/home/deploy/db_backup
 
