@@ -15,12 +15,12 @@ clients=[{
     },
     "3":{
         "client":"autoview",
-        "mysql_db":"db_bizpro_autoview",
+        "mysql_db":"db_bizpro_auto_view",
         
     },    
     "4":{
         "client":"carmandu",
-        "mysql_db":"db_bizpro_carmandu",
+        "mysql_db":"db_bizpro_easy_carmandu",
         
     },
     "5":{

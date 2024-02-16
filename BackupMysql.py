@@ -38,7 +38,7 @@ class BackupMysql:
             return True
         except Exception as exc:
             print(exc)
-    
+
 
     def rm_db_backup(self):
         try:
